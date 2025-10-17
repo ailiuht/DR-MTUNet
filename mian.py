@@ -230,19 +230,19 @@ if __name__ == "__main__":
     )
 
     # 启动训练
-    # train_model(
-    #     model,
-    #     train_loader,
-    #     val_loader,
-    #     test_loader,
-    #     phases=[
-    #         ('recon', 700),
-    #         ('full', 300)
-    #     ],
-    #     pretrained_weights=pretrained_weights,
-    #     device=device,
-    #     log_file=log_file
-    # )
+    train_model(
+        model,
+        train_loader,
+        val_loader,
+        test_loader,
+        phases=[
+            ('recon', 300),
+            ('full', 200)
+        ],
+        pretrained_weights=pretrained_weights,
+        device=device,
+        log_file=log_file
+    )
     # # =============================test=====================================================
     history = {'test_metrics': None}
     test_metrics = validate(model, test_loader,  device, is_test=True, pretrained_weights=pretrained_weights)
@@ -256,3 +256,4 @@ if __name__ == "__main__":
     # logger.info("训练完成，正在清理缓存文件...")
     # clean_cache_files(cache_names)
     # logger.info("缓存文件清理完成")
+
