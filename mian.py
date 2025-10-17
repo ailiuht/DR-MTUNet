@@ -218,10 +218,21 @@ if __name__ == "__main__":
 
     # 创建数据集加载器（使用内存缓存的数据集）
 
-    test_loader = DataLoader(
-        test_dataset,
-        batch_size=8,
-        shuffle=False,  # 测试集不需要shuffle
+    train_loader = DataLoader(
+        train_cache,
+        num_workers=num_workers_val,
+        batch_size=batch_size,
+        shuffle=True,
+        pin_memory=True,
+        persistent_workers=persistent_workers_val,
+        prefetch_factor=prefetch_factor_val,
+        drop_last=True,
+        collate_fn=multi_tensor_collate
+    )
+     val_loader = DataLoader(
+        val_cache,
+        batch_size=batch_size,
+        shuffle=False,  # 验证集不需要shuffle
         persistent_workers=persistent_workers_val,
         num_workers=num_workers_val,
         prefetch_factor=prefetch_factor_val,
@@ -229,6 +240,16 @@ if __name__ == "__main__":
         collate_fn=multi_tensor_collate
     )
 
+    test_loader = DataLoader(
+        test_dataset,
+        batch_size=batch_size,
+        shuffle=False,  # 测试集不需要shuffle
+        persistent_workers=persistent_workers_val,
+        num_workers=num_workers_val,
+        prefetch_factor=prefetch_factor_val,
+        drop_last=True,
+        collate_fn=multi_tensor_collate
+    )
     # 启动训练
     train_model(
         model,
@@ -256,4 +277,5 @@ if __name__ == "__main__":
     # logger.info("训练完成，正在清理缓存文件...")
     # clean_cache_files(cache_names)
     # logger.info("缓存文件清理完成")
+
 
